@@ -1,37 +1,35 @@
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, 'config', 'config.env') });
 
 const express = require('express');
 const app = express();
-const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const connectDatabase = require('./config/connectDatabase');
 
-// Load environment variables
-dotenv.config({ path: path.join(__dirname, 'config', 'config.env') });
-
-// ✅ Middleware to parse JSON bodies
-app.use(express.json());
-
-// Routes
-const product = require('./routes/product');
-const order = require('./routes/order');
-
+// ✅ Connect to MongoDB
 connectDatabase();
 
-app.use(express.json())
+// ✅ Middleware
+app.use(express.json());
 app.use(cors());
+
+// ✅ API Routes
+const product = require('./routes/product');
+const order = require('./routes/order');
 app.use('/api/v1', product);
 app.use('/api/v1', order);
 
-// Start server
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT} in ${process.env.NODE_ENV} mode`);
-});
+// ✅ Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// Serve React frontend in production
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+  });
+}
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+// ✅ Start server (for both local & Render)
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
 });
