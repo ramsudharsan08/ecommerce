@@ -16,12 +16,14 @@ function App() {
       <Router>
         <ToastContainer theme='dark' position='bottom-center'/>
         <Header cartItems={cartItems}/>
+        <div className="main-content">
           <Routes>
               <Route path='/' element={<Home/>}/>
               <Route path='/search' element={<Home/>}></Route>
               <Route path='/product/:id' element={< ProductDetial cartItems={cartItems} setCartItems={setCartItems}/>}></Route>
               <Route path='/cart' element={< Cart cartItems={cartItems} setCartItems={setCartItems}/>}></Route>
           </Routes>
+        </div>
         <Footer/>
       </Router>
     </div>

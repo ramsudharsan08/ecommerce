@@ -146,8 +146,18 @@ nav {
 .card-img-top {
   width: 200px;
   height: 150px;
+  margin-top: auto;
 }
 
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
 .ratings {
   font-size: 1.2rem;
   color: #fdcc0d;
@@ -659,4 +669,8 @@ ul.CTAs a {
 .review_user {
   font-size: 0.8rem;
   color: grey;
+}
+
+.navbar-brand img {
+  width: 70px;
 }
